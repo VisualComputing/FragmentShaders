@@ -1,4 +1,4 @@
-## Visual Computing Slides -- Shaders
+## Visual Computing Slides -- Fragment Shaders
 
 Part of the *Visual Computing* course given at [National University of Colombia](http://www.disi.unal.edu.co/) by [Jean Pierre Charalambos](http://otrolado.info) and [Andres Colubri](http://codeanticode.wordpress.com/).
 
@@ -11,7 +11,7 @@ Made possible thanks to...
 ## Setup
 
  ```sh
- $ git clone https://github.com/VisualComputing/Shaders.git
+ $ git clone https://github.com/VisualComputing/FragmentShaders.git
  $ git checkout gh-pages
  ```
  
