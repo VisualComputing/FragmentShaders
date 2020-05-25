@@ -989,21 +989,6 @@ void main() {
 }
 ```
 
-V:
-
-## Convolution filters
-### Suggested workshop
-
-> Convolution filters
-
-Tasks
-
-1. Support some common [convolution kernels](https://en.wikipedia.org/wiki/Kernel_(image_processing) using fragment shaders
-2. Allow customization of convolution kernels
-3. Filter both image and video files
-
-Idea for a project: use the [(fast) Fourier transform](http://lodev.org/cgtutor/filtering.html) to fast apply the filters
-
 H:
 
 ## Screen filters
