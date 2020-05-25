@@ -675,18 +675,19 @@ void main() {
 }
 ```
 
-N:
-
-The texture * vertColor product is consistent:
-* vertColor is in [0..1]
-* texture2D(texture, vertTexCoord.st) is also in [0..1]
+Observe that the texture * vertColor product is consistent:
+* `vertColor` is in `[0..1]`
+* `texture2D(texture, vertTexCoord.st)` is also in `[0..1]`
 
 V:
 
 ## Texture shaders: Design patterns
 ### Simple texture: Luma coefficient
 
-
+<figure>
+    <img height="400" src="fig/luma.png">
+    <figcaption>Luma shader output (source code available [here](https://github.com/VisualComputing/FragmentShaders/tree/gh-pages/sketches/desktop/Luma))</figcaption>
+</figure>
 
 V:
 
