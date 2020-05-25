@@ -33,15 +33,13 @@ H:
 <!-- .element: class="fragment" data-fragment-index="1"-->
 3. The chow mein can
 <!-- .element: class="fragment" data-fragment-index="2"-->
-4. Color shaders
+4. Texture shaders
 <!-- .element: class="fragment" data-fragment-index="2"-->
-5. Texture shaders
+5. Convolution filters
 <!-- .element: class="fragment" data-fragment-index="2"-->
-6. Convolution filters
-<!-- .element: class="fragment" data-fragment-index="2"-->
-7. Screen filters
+6. Screen filters
 <!-- .element: class="fragment" data-fragment-index="3"-->
-8. Shadertoy
+7. Shadertoy
 <!-- .element: class="fragment" data-fragment-index="3"-->
 
 H:
@@ -648,53 +646,6 @@ V:
 <a href="fig/lachoy.jpg" target="_blank"><img width="800" src="fig/lachoy.jpg"></a>
 
 (from Jason Liebig's <a href="http://www.flickr.com/photos/jasonliebigstuff/3739263136/in/photostream/" target="_blank">FLICKR collection</a> of vintage labels and wrappers)
-
-H:
-
-## Color shaders
-
-<figure>
-    <img height="400" src="fig/color.png">
-    <figcaption>Color shader output (source code available [here](https://github.com/codeanticode/pshader-tutorials/tree/master/intro/Ex_04_2_color))</figcaption>
-</figure>
-
-V:
-
-## Color shaders: Design patterns
-
-> Pattern 1: Data sent from the sketch to the shaders
-
-([colorvert.glsl](https://github.com/codeanticode/pshader-tutorials/blob/master/intro/Ex_04_2_color/data/colorvert.glsl) excerpt)
-```glsl
-...
-attribute vec4 color;
-```
-
-V:
-
-## Color shaders: Design patterns
-
-> Pattern 2: Passing data among shaders
-
-([colorvert.glsl](https://github.com/codeanticode/pshader-tutorials/blob/master/intro/Ex_04_2_color/data/colorvert.glsl) excerpt)
-```glsl
-attribute vec4 color;
-varying vec4 vertColor;
-void main() {
-  ...
-  vertColor = color;
-}
-```
-<!-- .element: class="fragment" data-fragment-index="1"-->
-
-([colorfrag.glsl](https://github.com/codeanticode/pshader-tutorials/blob/master/intro/Ex_04_2_color/data/colorfrag.glsl) excerpt)
-```glsl
-varying vec4 vertColor;
-void main() {
-  gl_FragColor = vertColor;
-}
-```
-<!-- .element: class="fragment" data-fragment-index="2"-->
 
 H:
 
