@@ -675,7 +675,7 @@ void main() {
 }
 ```
 
-Observe that the texture * vertColor product is consistent:
+Observe that the `texture2D(texture, vertTexCoord.st) * vertColor` product is consistent:
 * `vertColor` is in `[0..1]`
 * `texture2D(texture, vertTexCoord.st)` is also in `[0..1]`
 
@@ -688,6 +688,31 @@ V:
     <img height="400" src="fig/luma.png">
     <figcaption>Luma shader output (source code available [here](https://github.com/VisualComputing/FragmentShaders/tree/gh-pages/sketches/desktop/Luma))</figcaption>
 </figure>
+
+V:
+
+## Texture shaders: Design patterns
+### Simple texture: Luma coefficient
+
+> Patterns 1, 2 & 3
+
+```glsl
+//excerpt from luma.glsl
+// Pattern 1: Data sent from the sketch to the shaders
+uniform sampler2D texture;
+// Patter 2: Passing data among shaders
+varying vec4 vertColor;
+varying vec4 vertTexCoord;
+
+const vec4 lumcoeff = vec4(0.299, 0.587, 0.114, 0);
+
+void main() {
+  // Pattern 3: Consistency of space transformations
+  vec4 col = texture2D(texture, vertTexCoord.st);
+  float lum = dot(col, lumcoeff);
+  gl_FragColor = vec4(lum, lum, lum, 1.0) * vertColor;  
+}
+```
 
 V:
 
