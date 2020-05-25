@@ -857,8 +857,8 @@ V:
 
 ```glsl
 //excerpt from fragment shader
-uniform sampler2D texture;
-uniform vec2 texOffset;
+uniform sampler2D texture;// Pattern 1
+uniform vec2 texOffset;// Pattern 1
 varying vec4 vertColor;//Pattern 2
 varying vec4 vertTexCoord;//Pattern 2
 ...
