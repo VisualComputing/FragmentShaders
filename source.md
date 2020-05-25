@@ -19,9 +19,9 @@
 
 H:
 
-## SHADERS IN PROCESSING
+## FRAGMENT-SHADERS IN PROCESSING
 
-Andres Colubri & Jean Pierre Charalambos
+Jean Pierre Charalambos
 
 H:
 
@@ -31,23 +31,17 @@ H:
 <!-- .element: class="fragment" data-fragment-index="1"-->
 2. Shader design patterns
 <!-- .element: class="fragment" data-fragment-index="1"-->
-3. Examples
-<!-- .element: class="fragment" data-fragment-index="1"-->
-4. The chow mein can
+3. The chow mein can
 <!-- .element: class="fragment" data-fragment-index="2"-->
-5. Color shaders
+4. Color shaders
 <!-- .element: class="fragment" data-fragment-index="2"-->
-6. Texture shaders
+5. Texture shaders
 <!-- .element: class="fragment" data-fragment-index="2"-->
-7. Light shaders
+6. Convolution filters
 <!-- .element: class="fragment" data-fragment-index="2"-->
-8. Convolution filters
-<!-- .element: class="fragment" data-fragment-index="2"-->
-9. Screen filters
+7. Screen filters
 <!-- .element: class="fragment" data-fragment-index="3"-->
-10. Shadertoy
-<!-- .element: class="fragment" data-fragment-index="3"-->
-11. Shaderbase
+8. Shadertoy
 <!-- .element: class="fragment" data-fragment-index="3"-->
 
 H:
@@ -57,54 +51,10 @@ H:
 <li class="fragment">A shader is a program that runs on the GPU (Graphics Processing Unit) and it is controlled by our application (for example a Processing sketch)</li>
 <li class="fragment">The language of the shaders in Processing is GLSL (OpenGL Shading Language)</li>
 
-V:
+### History
 
-## Intro: History
-
-<li class="fragment">Andres started his involvement with Processing back in 2007 with a couple of libraries called <a href="http://andrescolubri.net/glgraphics_gsvideo/" target="_blank">GLGraphics and GSVideo</a></li>
+<li class="fragment">Andres Colubri started his involvement with Processing back in 2007 with a couple of libraries called <a href="http://andrescolubri.net/glgraphics_gsvideo/" target="_blank">GLGraphics and GSVideo</a></li>
 <li class="fragment">In 2013, <a href="http://andrescolubri.net/processing-2/" target="_blank">Processing 2.0</a> was released and incorporated most of the funcionality of GLGraphics and GSVideo, including shaders, into the core of the language</li>
-
-V:
-
-## Intro: Sample projects
-### Generating Utopia, by Stefan Wagner
-
-<iframe src="//player.vimeo.com/video/74066023" width="854" height="510" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-
-V:
-
-## Intro: Sample projects
-### Video portraits, by Sergio Albiac
-
-<iframe src="//player.vimeo.com/video/32760578" width="854" height="510" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-
-V:
-
-## Intro: Sample projects
-### Generative Typography, by Amnon Owed
-
-<iframe src="https://player.vimeo.com/video/101383026" width="854" height="478" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-
-V:
-
-## Intro: Sample projects
-### Unnamed soundsculpture, by Daniel Franke
-
-<iframe src="//player.vimeo.com/video/38840688" width="854" height="510" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-
-V:
-
-## Intro: Sample projects
-### Just Cause 2 visualization, by Jim Blackhurst
-
-<iframe width="854" height="510" src="//www.youtube.com/embed/hEoxaGkNcrg" frameborder="0" allowfullscreen></iframe>
-
-V:
-
-## Intro: Sample projects
-### Latent State, thesis project
-
-<iframe src="//player.vimeo.com/video/4806038" width="854" height="469" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
 
 V:
 
@@ -126,7 +76,7 @@ The vertex shader is run on *each vertex* sent from the sketch:
 
 ```python
 for vertex in geometry:
-    vertex_shader(vertex)
+    vertex_clipspace = vertex_shader(vertex)
 ```
 
 The fragment shader is run on *each pixel* covered by the geometry in our sketch:
@@ -933,274 +883,6 @@ void main() {
 
 H:
 
-## Light shaders
-### Simple lighting models
-
-Simple lighting models of a 3D scene involves at least:
-
-1. (optionally) Taking into account ambient light
-2. Placing one or more light sources in the space
-3. Defining their parameters, such as type (point, spotlight) and color (diffuse, specular)
-
-Assumption: light source that light equally in all directions
-<!-- .element: class="fragment" data-fragment-index="1"-->
-
-V:
-
-## Light shaders
-### Lighting parameters: diffuse light
-
-<figure>
-    <img height="400" src="fig/lighting.png">
-    <figcaption>Diffuse light: `$I = direction \bullet normal$`</figcaption>
-</figure>
-
-V:
-
-## Light shaders
-### Lighting parameters: diffuse light
-
-<figure>
-    <img height="400" src="fig/diffuse.png">
-    <figcaption>Diffuse light: `$I = direction \bullet normal$`</figcaption>
-</figure>
-
-V:
-
-## Light shaders
-### Lighting parameters: per vertex diffuse light
-
-<figure>
-    <img height="400" src="fig/vertlight.png">
-    <figcaption>Per vertex diffuse light shader output (source code available [here](https://github.com/codeanticode/pshader-tutorials/blob/master/intro/Ex_06_1_light/))</figcaption>
-</figure>
-
-V:
-
-## Light shaders: Design patterns
-### Lighting parameters: per vertex diffuse light
-
-> Pattern 1: Data sent from the sketch to the shaders
-
-```glsl
-//excerpt from lightvert.glsl
-uniform mat4 modelview;
-uniform mat3 normalMatrix;
-uniform vec4 lightPosition;
-
-attribute vec4 position;
-attribute vec4 color;
-attribute vec3 normal;
-```
-
-V:
-
-## Light shaders: Design patterns
-### Lighting parameters: per vertex diffuse light
-#### Observation about the [normal matrix](http://www.lighthouse3d.com/tutorials/glsl-12-tutorial/the-normal-matrix/)
-
-Let $M$ be $ModelView(4;4)$ (i.e., it is formed by deleting row and column 4 from the ModelView)
-
-> Multiplying the input ```normal``` vector by the ```normalMatrix```, i.e., `$({M^{-1})}^T$`, yields its coordinates in the eye-space
-
-V:
-
-## Light shaders: Design patterns
-### Lighting parameters: per vertex diffuse light
-#### Observation about the [normal matrix](http://www.lighthouse3d.com/tutorials/glsl-12-tutorial/the-normal-matrix/)
-
-Why not use ```modelview``` matrix, instead of ```normalMatrix``` (`$({M^{-1})}^T$`)?
-
-<figure>
-    <img height="300" src="fig/normalmatrix.png">
-    <figcaption>`$N * modelview$` when the matrix contains a non-uniform scale</figcaption>
-</figure>
-<!-- .element: class="fragment" data-fragment-index="1"-->
-
-V:
-
-## Light shaders: Design patterns
-### Lighting parameters: per vertex diffuse light
-
-> Pattern 2: Passing data among shaders
-
-> Pattern 3: Consistency of geometry operations
-
-```glsl
-//excerpt from lightvert.glsl
-uniform vec4 lightPosition;
-varying vec4 vertColor;
-
-void main() {
-  ...
-  vec3 ecPosition = vec3(modelview * position);//eye coordinate system
-  vec3 ecNormal = normalize(normalMatrix * normal);//eye coordinate system
-  vec3 direction = normalize(lightPosition.xyz - ecPosition);//Pattern 3   
-  float intensity = max(0.0, dot(direction, ecNormal));//Pattern 3
-  vertColor = vec4(intensity, intensity, intensity, 1) * color;
-}
-```
-
-V:
-
-## Light shaders: Design patterns
-### Lighting parameters: per vertex diffuse light
-
-> Pattern 2: Passing data among shaders
-
-```glsl
-//lightfrag.glsl
-varying vec4 vertColor;
-
-void main() {
-  gl_FragColor = vertColor;
-}
-```
-
-V:
-
-## Light shaders
-### Lighting parameters: per pixel diffuse light
-
-<figure>
-    <img height="400" src="fig/pixlight.png">
-    <figcaption>Per pixel diffuse light shader output (source code available [here](https://github.com/codeanticode/pshader-tutorials/blob/master/intro/Ex_06_2_pixlight/))</figcaption>
-</figure>
-
-V:
-
-## Light shaders: Design patterns
-### Lighting parameters: per pixel diffuse light
-
-> Pattern 1: Data sent from the sketch to the shaders
-
-```glsl
-//excerpt from pixlightvert.glsl
-uniform mat4 modelview;
-uniform mat3 normalMatrix;
-uniform vec4 lightPosition;
-
-attribute vec4 position;
-attribute vec4 color;
-attribute vec3 normal;
-```
-
-V:
-
-## Light shaders: Design patterns
-### Lighting parameters: per pixel diffuse light
-
-> Pattern 2: Passing data among shaders
-
-> Pattern 3: Consistency of geometry operations
-
-```glsl
-//excerpt from pixlightvert.glsl
-varying vec4 vertColor;
-varying vec3 ecNormal;
-varying vec3 lightDir;
-
-void main() {
-  ...
-  vec3 ecPosition = vec3(modelview * position);
-  ecNormal = normalize(normalMatrix * normal);
-  lightDir = normalize(lightPosition.xyz - ecPosition);//Pattern 3
-  vertColor = color;
-}
-```
-
-V:
-
-## Light shaders: Design patterns
-### Lighting parameters: per pixel diffuse light
-
-> Pattern 2: Passing data among shaders
-
-> Pattern 3: Consistency of geometry operations
-
-```glsl
-//pixlightfrag.glsl
-varying vec4 vertColor;
-varying vec3 ecNormal;
-varying vec3 lightDir;
-
-void main() {  
-  vec3 direction = normalize(lightDir);
-  vec3 normal = normalize(ecNormal);
-  float intensity = max(0.0, dot(direction, normal));//Pattern 3
-  gl_FragColor = vec4(intensity, intensity, intensity, 1) * vertColor;
-}
-```
-
-V:
-
-## Light shaders
-### Lighting params: specular light ([Phong model](https://en.wikipedia.org/wiki/Phong_reflection_model))
-
-<figure>
-    <img height="400" src="fig/phong.png">
-    <figcaption>Specular light: `$I = direction_{reflected} \bullet observer$`</figcaption>
-</figure>
-
-V:
-
-## Light shaders
-### Lighting parameters: specular light
-
-<figure>
-    <img height="400" src="fig/specular.png">
-    <figcaption>Specular light: `$I = direction_{reflected} \bullet observer$`</figcaption>
-</figure>
-
-V:
-
-## Light shaders
-### Lighting parameters: per vertex specular light
-
-<figure>
-    <img height="400" src="fig/vert_spec.png">
-    <figcaption>Per vertex specular light shader output (source code available [here](https://github.com/VisualComputing/Shaders/tree/gh-pages/sketches/desktop/Specular))</figcaption>
-</figure>
-
-V:
-
-## Light shaders
-### Lighting parameters: per vertex specular light
-
-> Identifying the per vertex specular shader design patterns is left as an excercise to the reader
-
-V:
-
-## Light shaders
-### Lighting parameters: per pixel specular light
-
-<figure>
-    <img height="400" src="fig/frag_spec.png">
-    <figcaption>Per pixel specular light shader output (source code available [here](https://github.com/VisualComputing/Shaders/tree/gh-pages/sketches/desktop/PixSpecular))</figcaption>
-</figure>
-
-V:
-
-## Light shaders
-### Lighting parameters: per pixel specular light
-
-> Identifying the per pixel specular shader design patterns is left as an excercise to the reader
-
-V:
-
-## Light shaders
-### Suggested workshop
-
-> Simple lighting and material
-
-Tasks
-
-1. Combine all the simple lighting models using per-vertex and per-pixel shaders
-2. Use up to 8 lights in the model
-3. Implement other simple light model such as [normal mapping]() or [Warn lights](https://books.google.com.co/books?id=pCwwxlMuNycC&pg=PA113&lpg=PA113&dq=shader+warn+light+model&source=bl&ots=vVu814VVAU&sig=nKGlD6fpT6pl5U1GUcdhIJxEQQQ&hl=en&sa=X&ved=0ahUKEwipp_bQ9e3TAhVEPiYKHS5wC3wQ6AEIJTAA#v=onepage&q=shader%20warn%20light%20model&f=false)
-
-H:
-
 ## Convolution filters
 ### Overview
 
@@ -1778,22 +1460,11 @@ void setup() {
 
 void draw() {
   background(0);
-    
   shader.set("time", (float)(millis()/1000.0));
   shader(shader); 
   rect(0, 0, width, height);
 }
 ```
-
-H:
-
-## Shaderbase
-### Creating and sharing shaders
-
-<li class="fragment"> This is an on-going [collaboration](https://github.com/remixlab/shaderbase)
-<li class="fragment"> The goal is to create a Processing tool that allows users to upload shaders to a github-based db
-
-<img width="640" src="fig/ShaderBase.png">
 
 H:
 
@@ -1805,4 +1476,3 @@ H:
 * [Processing shaders tutorial](https://www.processing.org/tutorials/pshader/)
 * [Tutorial source code](https://github.com/codeanticode/pshader-tutorials)
 * [Shader Programming for Computational Arts and Design - A Comparison between Creative Coding Frameworks](http://www.scitepress.org/DigitalLibrary/PublicationsDetail.aspx?ID=ysaclbloDHk=&t=1)
-* [ShaderBase: A Processing Tool for Shaders in Computational Arts and Design](http://www.scitepress.org/DigitalLibrary/Link.aspx?doi=10.5220/0005673201890194) (source code [available here](https://github.com/remixlab/shaderbase))
