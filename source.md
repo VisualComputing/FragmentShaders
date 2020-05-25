@@ -389,7 +389,7 @@ H:
 
 <figure>
     <img height="400" src="fig/raster.png">
-    <figcaption>[Raster example](https://github.com/VisualComputing/Shaders/tree/gh-pages/sketches/desktop/raster)</figcaption>
+    <figcaption>[Raster example](https://github.com/VisualComputing/VertexShaders/tree/gh-pages/sketches/desktop/raster)</figcaption>
 </figure>
 
 V:
@@ -397,7 +397,7 @@ V:
 ## Examples
 ### Raster
 
-[Vertex shader code:](https://github.com/VisualComputing/Shaders/blob/gh-pages/sketches/desktop/raster/data/vert.glsl)
+[Vertex shader code:](https://github.com/VisualComputing/VertexShaders/blob/gh-pages/sketches/desktop/raster/data/vert.glsl)
 
 ```glsl
 // Pattern 1: variables are sent by processing
@@ -420,7 +420,7 @@ V:
 ## Examples
 ### Raster
 
-[Fragment shader code:](https://github.com/VisualComputing/Shaders/blob/gh-pages/sketches/desktop/raster/data/frag.glsl)
+[Fragment shader code:](https://github.com/VisualComputing/VertexShaders/blob/gh-pages/sketches/desktop/raster/data/frag.glsl)
 
 ```glsl
 varying vec4 vertColor;
@@ -436,7 +436,7 @@ V:
 ## Examples
 ### Raster
 
-[raster.pde excerpt:](https://github.com/VisualComputing/Shaders/blob/gh-pages/sketches/desktop/raster/raster.pde)
+[raster.pde excerpt:](https://github.com/VisualComputing/VertexShaders/blob/gh-pages/sketches/desktop/raster/raster.pde)
 
 ```java
 PShader shader;
@@ -524,7 +524,7 @@ V:
 
 <figure>
     <img height="400" src="fig/transformations.png">
-    <figcaption>Passive transformation shaders output (source code available [here](https://github.com/VisualComputing/Shaders/tree/gh-pages/sketches/desktop/PassiveTransformations))</figcaption>
+    <figcaption>Passive transformation shaders output (source code available [here](https://github.com/VisualComputing/VertexShaders/tree/gh-pages/sketches/desktop/PassiveTransformations))</figcaption>
 </figure>
 
 V:
@@ -535,7 +535,7 @@ V:
 
 > Pattern 1: Data sent from the sketch to the shaders
 
-([vert.glsl](https://github.com/VisualComputing/Shaders/blob/gh-pages/sketches/desktop/PassiveTransformations/data/vert.glsl) excerpt)
+([vert.glsl](https://github.com/VisualComputing/VertexShaders/blob/gh-pages/sketches/desktop/PassiveTransformations/data/vert.glsl) excerpt)
 
 ```glsl
 ...
@@ -554,7 +554,7 @@ V:
 ### Bypassing Processing matrices
 #### Design patterns
 
-([PassiveTransformations.pde](https://github.com/VisualComputing/Shaders/blob/gh-pages/sketches/desktop/PassiveTransformations/data/vert.glsl) excerpt)
+([PassiveTransformations.pde](https://github.com/VisualComputing/VertexShaders/blob/gh-pages/sketches/desktop/PassiveTransformations/data/vert.glsl) excerpt)
 
 ```java
 Graph graph;
@@ -695,7 +695,7 @@ V:
 
 <figure>
     <img height="400" src="fig/bintex.png">
-    <figcaption>Pixelation shader output (source code available [here](https://github.com/VisualComputing/Shaders/blob/gh-pages/sketches/desktop/Pixelator))</figcaption>
+    <figcaption>Pixelation shader output (source code available [here](https://github.com/VisualComputing/VertexShaders/blob/gh-pages/sketches/desktop/Pixelator))</figcaption>
 </figure>
 
 V:
@@ -910,7 +910,7 @@ V:
 
 <figure>
     <img height="400" src="fig/sharpen.png">
-    <figcaption>Sharpen filter (source code available [here](https://github.com/VisualComputing/Shaders/tree/gh-pages/sketches/desktop/Sharpen))</figcaption>
+    <figcaption>Sharpen filter (source code available [here](https://github.com/VisualComputing/VertexShaders/tree/gh-pages/sketches/desktop/Sharpen))</figcaption>
 </figure>
 
 V:
@@ -986,7 +986,7 @@ H:
 To apply any of the image post-processing effects to an arbitrary
 Processing sketch call ```filter(PShader shader)``` after your drawing
 
-For example, to apply the [sharpen shader as a screen filter](https://github.com/VisualComputing/Shaders/tree/gh-pages/sketches/desktop/ScreenFilter):
+For example, to apply the [sharpen shader as a screen filter](https://github.com/VisualComputing/VertexShaders/tree/gh-pages/sketches/desktop/ScreenFilter):
 
 ```java
 PShader sharpen;
