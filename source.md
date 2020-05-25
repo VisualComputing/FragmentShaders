@@ -662,48 +662,6 @@ V:
 ## Texture shaders: Design patterns
 ### Simple texture
 
-> Pattern 1: Data sent from the sketch to the shaders
-
-```glsl
-//excerpt from texvert.glsl
-uniform mat4 texMatrix;
-attribute vec2 texCoord;
-```
-<!-- .element: class="fragment" data-fragment-index="1"-->
-
-```glsl
-//excerpt from texfrag.glsl
-uniform sampler2D texture;
-...
-```
-<!-- .element: class="fragment" data-fragment-index="2"-->
-
-V:
-
-## Texture shaders: Design patterns
-### Simple texture
-
-> Pattern 2: Passing data among shaders
-
-```glsl
-//excerpt from texvert.glsl
-uniform mat4 texMatrix;
-attribute vec2 texCoord;
-varying vec4 vertTexCoord;
-void main() {
-  ...
-  vertTexCoord = texMatrix * vec4(texCoord, 1.0, 1.0);
-}
-```
-
-> texMatrix rescales the texture coordinates (texCoord): inversion along the Y-axis, and non-power-of-two textures
-<!-- .element: class="fragment" data-fragment-index="1"-->
-
-V:
-
-## Texture shaders: Design patterns
-### Simple texture
-
 > Pattern 2: Passing data among shaders
 
 ```glsl
@@ -722,6 +680,13 @@ N:
 The texture * vertColor product is consistent:
 * vertColor is in [0..1]
 * texture2D(texture, vertTexCoord.st) is also in [0..1]
+
+V:
+
+## Texture shaders: Design patterns
+### Simple texture: Luma coefficient
+
+
 
 V:
 
