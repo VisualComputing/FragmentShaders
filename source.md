@@ -392,10 +392,9 @@ H:
     <figcaption>[Raster example](https://github.com/VisualComputing/VertexShaders/tree/gh-pages/sketches/desktop/raster)</figcaption>
 </figure>
 
-V:
+N:
 
-## Examples
-### Raster
+VertexShader is in the next presentation:
 
 [Vertex shader code:](https://github.com/VisualComputing/VertexShaders/blob/gh-pages/sketches/desktop/raster/data/vert.glsl)
 
