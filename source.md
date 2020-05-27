@@ -499,87 +499,19 @@ V:
 
 ```java
 protected void _drawBackBuffer(Node node) {
-    PGraphics pGraphics = _backBuffer();
-    if (node.pickingThreshold() == 0) {
-      pGraphics.push();
-      // compute rgb from node id
-      float r = (float) (node.id() & 255) / 255.f;
-      float g = (float) ((node.id() >> 8) & 255) / 255.f;
-      float b = (float) ((node.id() >> 16) & 255) / 255.f;
-      // send data to shaders
-      pGraphics.shader(_triangleShader);
-      _triangleShader.set("id", new PVector(r, g, b));
-
-      ...
-      pGraphics.pop();
-    }
+  PGraphics pGraphics = _backBuffer();
+  if (node.pickingThreshold() == 0) {
+    pGraphics.push();
+    // compute rgb from node id
+    float r = (float) (node.id() & 255) / 255.f;
+    float g = (float) ((node.id() >> 8) & 255) / 255.f;
+    float b = (float) ((node.id() >> 16) & 255) / 255.f;
+    // send data to shaders
+    pGraphics.shader(_triangleShader);
+    _triangleShader.set("id", new PVector(r, g, b));
+    ...
+    pGraphics.pop();
   }
-  ```
-
-V:
-
-## Examples
-### Bypassing Processing matrices
-
-<figure>
-    <img height="400" src="fig/transformations.png">
-    <figcaption>Passive transformation shaders output (source code available [here](https://github.com/VisualComputing/VertexShaders/tree/gh-pages/sketches/desktop/PassiveTransformations))</figcaption>
-</figure>
-
-V:
-
-## Examples
-### Bypassing Processing matrices
-#### Design patterns
-
-> Pattern 1: Data sent from the sketch to the shaders
-
-([vert.glsl](https://github.com/VisualComputing/VertexShaders/blob/gh-pages/sketches/desktop/PassiveTransformations/data/vert.glsl) excerpt)
-
-```glsl
-...
-uniform mat4 nub_transform;
-attribute vec4 vertex;
-
-void main() {
-  gl_Position = nub_transform * vertex;
-  ...
-}
-```
-
-V:
-
-## Examples
-### Bypassing Processing matrices
-#### Design patterns
-
-([PassiveTransformations.pde](https://github.com/VisualComputing/VertexShaders/blob/gh-pages/sketches/desktop/PassiveTransformations/data/vert.glsl) excerpt)
-
-```java
-Graph graph;
-Node[] nodes;
-PShader shader;
-
-void setup() {
-  graph = new Graph(g, width, height);
-  graph.setMatrixHandler(new MatrixHandler() {
-    @Override
-    protected void _setUniforms() {
-      shader(shader);
-      Scene.setUniform(shader, "nub_transform", transform());
-    }
-  });
-  ...
-  //discard Processing matrices
-  resetMatrix();
-  shader = loadShader("frag.glsl", "vert.glsl");
-}
-
-void draw() {
-  background(0);
-  // sets up the initial nub matrices according to user interaction
-  graph.preDraw();
-  graph.render();
 }
 ```
 
