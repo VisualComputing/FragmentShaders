@@ -596,6 +596,27 @@ V:
 > Pattern 2: Passing data among shaders
 
 ```glsl
+//excerpt from texvert.glsl
+uniform mat4 texMatrix;
+attribute vec2 texCoord;
+varying vec4 vertTexCoord;
+void main() {
+  ...
+  vertTexCoord = texMatrix * vec4(texCoord, 1.0, 1.0);
+}
+```
+
+> texMatrix rescales the texture coordinates (texCoord): inversion along the Y-axis, and non-power-of-two textures
+<!-- .element: class="fragment" data-fragment-index="1"-->
+
+V:
+
+## Texture shaders: Design patterns
+### Simple texture
+
+> Pattern 2: Passing data among shaders
+
+```glsl
 //excerpt from texfrag.glsl
 uniform sampler2D texture;
 varying vec4 vertColor;
