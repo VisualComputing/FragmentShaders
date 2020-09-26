@@ -29,7 +29,7 @@ H:
 
 1. Introduction
 <!-- .element: class="fragment" data-fragment-index="1"-->
-2. Shader design patterns
+2. Fragment shader design patterns
 <!-- .element: class="fragment" data-fragment-index="1"-->
 3. The chow mein can
 <!-- .element: class="fragment" data-fragment-index="2"-->
@@ -275,15 +275,14 @@ Example to set `mat4` uniform variables:
 
 H:
 
-## Shader design patterns
+## Fragment shader design patterns
 
 1. Data sent from the sketch to the shaders<!-- .element: class="fragment" data-fragment-index="1"-->
 2. Passing data among shaders<!-- .element: class="fragment" data-fragment-index="2"-->
-3. Consistency of geometry operations<!-- .element: class="fragment" data-fragment-index="3"-->
 
 V:
 
-## Shader design patterns
+## Fragment shader design patterns
 ### Pattern 1: Data sent from the sketch to the shaders
 
 > Processing passes data to the shaders in a context sensitive way
@@ -294,52 +293,37 @@ V:
 
 V:
 
-## Shader design patterns
+## Fragment shader design patterns
 ### Pattern 1: Data sent from the sketch to the shaders
 #### (Frequently used) Attribute variables
 
-| Processing methods    | Type   | Attribute                | Space     |
-|-----------------------|:------:|:------------------------:|:---------:|
-| `vertex()`            | `vec4` | `vertex` (or `position`) | _local_   |
-| `normal()`, `shape()` | `vec3` | `normal`                 | _local_   |
-| `vertex()`            | `vec2` | `texCoord`               | _texture_ |
-| `stroke()`, `fill()`  | `vec4` | `color`                  | --        |
+| Processing methods   | Type   | Attribute   | Space     |
+|----------------------|:------:|:-----------:|:---------:|
+| `vertex()`           | `vec2` | `texCoord`  | _texture_ |
+| `stroke()`, `fill()` | `vec4` | `color`     | --        |
 
 V:
 
-## Shader design patterns
+## Fragment shader design patterns
 ### Pattern 1: Data sent from the sketch to the shaders
 #### (Frequently used) Uniform variables
 
-| Processing methods                                                    | Type        | Uniform         |
-|-----------------------------------------------------------------------|:-----------:|:---------------:|
-| `orhto()`, `perspective()`                                            | `mat4`      | `projection`    |
-| `applyMatrix()`, `translate()`,<br>  `rotate()`, `scale()`            | `mat4`      | `modelview`     |
-| `applyMatrix()`, `translate()`,<br>  `rotate()`, `scale()`            | `mat3`      | `normalMatrix`  |
+| Processing methods | Type        | Uniform         | Space     |
+|--------------------|:-----------:|:---------------:|:---------:|
+| `texture()`        | `mat4`      | `texMatrix`     | --        |
+| `texture()`        | `sampler2D` | `texture`       | --        |
+| `texture()`        | `vec2`      | `texOffset`     | _texture_ |
 
 V:
 
-## Shader design patterns
-### Pattern 1: Data sent from the sketch to the shaders
-#### (Frequently used) Uniform variables
-
-| Processing methods                                                    | Type        | Uniform         | Space     |
-|-----------------------------------------------------------------------|:-----------:|:---------------:|:---------:|
-| `texture()`                                                           | `mat4`      | `texMatrix`     | --        |
-| `texture()`                                                           | `sampler2D` | `texture`       | --        |
-| `texture()`                                                           | `vec2`      | `texOffset`     | _texture_ |
-| `lights()`, `ambientLight()`,<br> `spotLight()`, `directionalLight()` | `vec4`      | `lightPosition` | _eye_     |
-
-V:
-
-## Shader design patterns
+## Fragment shader design patterns
 ### Pattern 1: Data sent from the sketch to the shaders
 
 > Check the [code](https://github.com/processing/processing/tree/master/core/src/processing/opengl/shaders) to consult all the attribute and uniform variables sent to the shaders
 
 V:
 
-## Shader design patterns
+## Fragment shader design patterns
 ### Pattern 2: Passing data among shaders
 
 > Uniform variables are available for both, the vertex and the fragment shader. Attribute variables are only available to the vertex shader
@@ -362,7 +346,7 @@ V:
 
 V:
 
-## Shader design patterns
+## Fragment shader design patterns
 ### Pattern 2: Passing data among shaders
 #### (Frequently used) Varying variables
 
@@ -370,17 +354,6 @@ V:
 |-----------------------|:------:|:----------:|:-------|:--------------:|
 | `stroke()`, `fill()`  | `vec4` | `color`    | `vec4` | `vertColor`    |
 | `vertex()`            | `vec2` | `texCoord` | `vec4` | `vertTexCoord` |
-
-V:
-
-## Shader design patterns
-### Pattern 3: Consistency of geometry operations
-
-> Geometry operation operands should be defined in the same coordinate system
-
-<li class="fragment"> Tip 1: ```transform * vertex // projection * modelview * vertex``` yields the vertex coordinates in [clip-space](http://www.songho.ca/opengl/gl_transform.html)
-<li class="fragment"> Tip 2: ```modelview * vertex``` yields the vertex coordinates in eye-space
-<li class="fragment"> Tip 3: Since the eye position is 0 in eye-space, eye-space is the usual coordinate system for geometry operations 
 
 H:
 
@@ -646,7 +619,7 @@ V:
 ## Texture shaders: Design patterns
 ### Simple texture: Luma coefficient
 
-> Patterns 1, 2 & 3
+> Patterns 1 & 2
 
 ```glsl
 //excerpt from luma.glsl
@@ -659,7 +632,6 @@ varying vec4 vertTexCoord;
 const vec4 lumcoeff = vec4(0.299, 0.587, 0.114, 0);
 
 void main() {
-  // Pattern 3: Consistency of space transformations
   vec4 col = texture2D(texture, vertTexCoord.st);
   float lum = dot(col, lumcoeff);
   gl_FragColor = vec4(lum, lum, lum, 1.0) * vertColor;  
