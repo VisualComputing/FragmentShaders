@@ -31,7 +31,7 @@ H:
 <!-- .element: class="fragment" data-fragment-index="1"-->
 2. Fragment shader design patterns
 <!-- .element: class="fragment" data-fragment-index="1"-->
-3. The chow mein can
+3. Luc Viatour fire breathing
 <!-- .element: class="fragment" data-fragment-index="2"-->
 4. Texture shaders
 <!-- .element: class="fragment" data-fragment-index="2"-->
@@ -465,11 +465,14 @@ void main() {
 
 H:
 
-## The chow mein can
+## Luc Viatour fire breathing
 
-During the rest of this presentation we will work with the following test scene:
+During the rest of this presentation we will work with the following test texture:
 
-<img width="640" src="fig/chowmein.png">
+<figure>
+    <img width="640" src="fig/fire_breathing.jpg">
+    <figcaption>[Luc Viatour fire breathing](https://upload.wikimedia.org/wikipedia/commons/0/02/Fire_breathing_2_Luc_Viatour.jpg)</figcaption>
+</figure>
 
 <li class="fragment"> We will be following the [Processing shader tutorial](https://processing.org/tutorials/pshader/) which source code is available [here](https://github.com/codeanticode/pshader-tutorials)
 
@@ -479,62 +482,36 @@ V:
 ### Code 
 
 ```java
-PImage label;
-PShape can;
-float angle;
+PImage pifire;
+PShape psfire;
 
 void setup() {
-  size(640, 360, P3D);  
-  label = loadImage("lachoy.jpg");
-  can = createCan(100, 200, 32, label);
+  size(1920, 1080, P3D);  
+  pifire = loadImage("fire_breathing.jpg");
+  psfire = fireTri(pifire);
 }
 
 void draw() {    
   background(0);
-  translate(width/2, height/2);
-  rotateY(angle);  
-  shape(can);  
-  angle += 0.01;
+  shape(psfire);
 }
 
-PShape createCan(float r, float h, int detail, PImage tex) {
-  textureMode(NORMAL);
+PShape fireTri(PImage tex) {
   PShape sh = createShape();
-  sh.beginShape(QUAD_STRIP);
+  sh.beginShape(TRIANGLE);
   sh.noStroke();
   sh.texture(tex);
-  for (int i = 0; i <= detail; i++) {
-    float angle = TWO_PI / detail;
-    float x = sin(i * angle);
-    float z = cos(i * angle);
-    float u = float(i) / detail;
-    sh.normal(x, 0, z);
-    sh.vertex(x * r, -h/2, z * r, u, 0);
-    sh.vertex(x * r, +h/2, z * r, u, 1);    
-  }
+  PVector p1, p2, p3;
+  p1 = new PVector(random(0, width), random(0, height));
+  p2 = new PVector(random(0, width), random(0, height));
+  p3 = new PVector(random(0, width), random(0, height));
+  sh.vertex(p1.x, p1.y, map(p1.x, 0, width, 0, pifire.width), map(p1.y, 0, height, 0, pifire.height));
+  sh.vertex(p2.x, p2.y, map(p2.x, 0, width, 0, pifire.width), map(p2.y, 0, height, 0, pifire.height));
+  sh.vertex(p3.x, p3.y, map(p3.x, 0, width, 0, pifire.width), map(p3.y, 0, height, 0, pifire.height));
   sh.endShape(); 
   return sh;
 }
 ```
-
-V:
-
-## The chow mein can
-### Texture
-
-<a href="fig/lachoy.jpg" target="_blank"><img width="800" src="fig/lachoy.jpg"></a>
-
-(from Jason Liebig's <a href="http://www.flickr.com/photos/jasonliebigstuff/3739263136/in/photostream/" target="_blank">FLICKR collection</a> of vintage labels and wrappers)
-
-H:
-
-## Texture shaders
-### Simple texture
-
-<figure>
-    <img height="400" src="fig/chowmein.png">
-    <figcaption>Texture shader output (source code available [here](https://github.com/codeanticode/pshader-tutorials/tree/master/intro/Ex_05_1_texture))</figcaption>
-</figure>
 
 V:
 
