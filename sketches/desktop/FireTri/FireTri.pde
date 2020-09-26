@@ -2,7 +2,7 @@ PImage pifire;
 PShape psfire;
 
 void setup() {
-  size(1920, 1080, P3D);  
+  size(1920, 1080, P2D);  
   pifire = loadImage("fire_breathing.jpg");
   psfire = fireTri(pifire);
 }

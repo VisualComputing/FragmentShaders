@@ -467,7 +467,7 @@ H:
 
 ## Luc Viatour fire breathing
 
-During the rest of this presentation we will work with the following test texture:
+_Leit motiv_ texture:
 
 <figure>
     <img width="640" src="fig/fire_breathing.jpg">
@@ -479,7 +479,7 @@ During the rest of this presentation we will work with the following test textur
 V:
 
 ## Luc Viatour fire breathing
-### Triangle
+### Texture mapping: using default shader
 
 <figure>
     <img height="400" src="fig/fire_tri.png">
@@ -489,7 +489,7 @@ V:
 V:
 
 ## Luc Viatour fire breathing
-### Triangle: using default shader
+### Texture mapping: using default shader
 
 ```java
 PImage pifire;
@@ -523,10 +523,20 @@ PShape fireTri(PImage tex) {
 }
 ```
 
+H:
+
+## Texture shaders
+### Simple texture: triangle
+
+<figure>
+    <img height="400" src="fig/fire_tri.png">
+    <figcaption>Fire breathing texture mapping (source code available [here](https://github.com/VisualComputing/FragmentShaders/tree/gh-pages/sketches/desktop/FireTri))</figcaption>
+</figure>
+
 V:
 
-## Luc Viatour fire breathing
-### Triangle: using custom shader
+## Texture shaders
+### Simple texture: triangle code
 
 ```java
 PImage pifire;
@@ -563,62 +573,20 @@ PShape fireTri(PImage tex) {
 }
 ```
 
-N:
-
-## Texture shaders: Design patterns
-### Simple texture
-
-> Pattern 2: Passing data among shaders
-
-```glsl
-//texvert.glsl
-uniform mat4 texMatrix;
-attribute vec2 texCoord;
-varying vec4 vertTexCoord;
-void main() {
-  ...
-  vertTexCoord = texMatrix * vec4(texCoord, 1.0, 1.0);
-}
-```
-
-> texMatrix rescales the texture coordinates (texCoord): inversion along the Y-axis, and non-power-of-two textures
-
 V:
 
-## Texture shaders: Design patterns
-### Simple texture
-
-> Pattern 2: Passing data among shaders
-
-```glsl
-//excerpt from texfrag.glsl
-uniform sampler2D texture;
-varying vec4 vertColor;
-varying vec4 vertTexCoord;
-
-void main() {
-  gl_FragColor = texture2D(texture, vertTexCoord.st) * vertColor;
-}
-```
-
-Observe that the `texture2D(texture, vertTexCoord.st) * vertColor` product is consistent:
-* `vertColor` is in `[0..1]`
-* `texture2D(texture, vertTexCoord.st)` is also in `[0..1]`
-
-V:
-
-## Luc Viatour fire breathing
-### Quad
+## Texture shaders
+### Simple texture: quad
 
 <figure>
     <img height="400" src="fig/fire_quad.png">
-    <figcaption>Fire breathing texture mapping (source code available [here](https://github.com/VisualComputing/FragmentShaders/tree/gh-pages/sketches/desktop/FireTri))</figcaption>
+    <figcaption>Fire breathing texture mapping (source code available [here](https://github.com/VisualComputing/FragmentShaders/tree/gh-pages/sketches/desktop/FireQuad))</figcaption>
 </figure>
 
 V:
 
-## Luc Viatour fire breathing
-### Triangle: using custom shader
+## Texture shaders
+### Simple texture: quad code
 
 ```glsl
 PImage pifire;
@@ -653,10 +621,52 @@ PShape fireTri(PImage tex) {
 }
 ```
 
+N:
+
+## Texture shaders
+### Simple texture: Design patterns
+
+> Pattern 2: Passing data among shaders
+
+```glsl
+//texvert.glsl
+uniform mat4 texMatrix;
+attribute vec2 texCoord;
+varying vec4 vertTexCoord;
+void main() {
+  ...
+  vertTexCoord = texMatrix * vec4(texCoord, 1.0, 1.0);
+}
+```
+
+> texMatrix rescales the texture coordinates (texCoord): inversion along the Y-axis, and non-power-of-two textures
+
 V:
 
-## Texture shaders: Design patterns
-### Simple texture: Luma coefficient
+## Texture shaders
+### Simple texture: Design patterns
+
+> Pattern 2: Passing data among shaders
+
+```glsl
+//excerpt from texfrag.glsl
+uniform sampler2D texture;
+varying vec4 vertColor;
+varying vec4 vertTexCoord;
+
+void main() {
+  gl_FragColor = texture2D(texture, vertTexCoord.st) * vertColor;
+}
+```
+
+Observe that the `texture2D(texture, vertTexCoord.st) * vertColor` product is consistent:
+* `vertColor` is in `[0..1]`
+* `texture2D(texture, vertTexCoord.st)` is also in `[0..1]`
+
+V:
+
+## Texture shaders
+### Luma coefficient
 
 <figure>
     <img height="400" src="fig/luma.png">
@@ -665,8 +675,8 @@ V:
 
 V:
 
-## Texture shaders: Design patterns
-### Simple texture: Luma coefficient
+## Texture shaders
+### Luma coefficient: Design patterns
 
 > Patterns 1 & 2
 
@@ -730,46 +740,34 @@ The constant 50 can be converted into an *uniform* variable (```binsize```):
 
 ```java
 //Pixelator.pde
-PImage label;
-PShape can;
-float angle;
-
-PShader pixelator;
+PImage pifire;
+PShape psfire;
+PShader pshader;
 
 void setup() {
-  size(640, 360, P3D);  
-  label = loadImage("lachoy.jpg");
-  can = createCan(100, 200, 32, label);
-  pixelator = loadShader("pixel.glsl");
+  size(1920, 1080, P2D);  
+  pifire = loadImage("fire_breathing.jpg");
+  psfire = fireTri(pifire);
+  pshader = loadShader("texfrag.glsl");
+  shader(pshader);
 }
 
 void draw() {    
   background(0);
-
-  pixelator.set("binsize", 100.0 * float(mouseX) / width);
-  shader(pixelator);
-    
-  translate(width/2, height/2);
-  rotateY(angle);  
-  shape(can);  
-  angle += 0.01;
+  pshader.set("binsize", 100.0 * float(mouseX) / width);
+  shape(psfire);
 }
 
-PShape createCan(float r, float h, int detail, PImage tex) {
+PShape fireTri(PImage tex) {
   textureMode(NORMAL);
   PShape sh = createShape();
-  sh.beginShape(QUAD_STRIP);
+  sh.beginShape(QUAD);
   sh.noStroke();
   sh.texture(tex);
-  for (int i = 0; i <= detail; i++) {
-    float angle = TWO_PI / detail;
-    float x = sin(i * angle);
-    float z = cos(i * angle);
-    float u = float(i) / detail;
-    sh.normal(x, 0, z);
-    sh.vertex(x * r, -h/2, z * r, u, 0);
-    sh.vertex(x * r, +h/2, z * r, u, 1);    
-  }
+  sh.vertex(0, 0, 0, 0);
+  sh.vertex(width, 0, 1, 0);
+  sh.vertex(width, height, 1, 1);
+  sh.vertex(0, height, 0, 1);
   sh.endShape(); 
   return sh;
 }

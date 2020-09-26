@@ -25,6 +25,7 @@ void settings() {
 
 void setup() {
   scene = new Scene(this);
+  scene.enableHint(Scene.BACKGROUND);
   if (scene.is3D())
     scene.setType(Scene.Type.ORTHOGRAPHIC);
   scene.setBounds(width/2);
