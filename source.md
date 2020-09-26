@@ -478,8 +478,18 @@ During the rest of this presentation we will work with the following test textur
 
 V:
 
-## The chow mein can
-### Code 
+## Luc Viatour fire breathing
+### Triangle
+
+<figure>
+    <img height="400" src="fig/fire_tri.png">
+    <figcaption>Fire breathing texture mapping (source code available [here](https://github.com/VisualComputing/FragmentShaders/tree/gh-pages/sketches/desktop/FireTri))</figcaption>
+</figure>
+
+V:
+
+## Luc Viatour fire breathing
+### Triangle: using default shader
 
 ```java
 PImage pifire;
@@ -515,13 +525,53 @@ PShape fireTri(PImage tex) {
 
 V:
 
+## Luc Viatour fire breathing
+### Triangle: using custom shader
+
+```java
+PImage pifire;
+PShape psfire;
+PShader pshader;
+
+void setup() {
+  size(1920, 1080, P3D);  
+  pifire = loadImage("fire_breathing.jpg");
+  psfire = fireTri(pifire);
+  pshader = loadShader("texfrag.glsl");
+  shader(pshader);
+}
+
+void draw() {    
+  background(0);
+  shape(psfire);
+}
+
+PShape fireTri(PImage tex) {
+  PShape sh = createShape();
+  sh.beginShape(TRIANGLE);
+  sh.noStroke();
+  sh.texture(tex);
+  PVector p1, p2, p3;
+  p1 = new PVector(random(0, width), random(0, height));
+  p2 = new PVector(random(0, width), random(0, height));
+  p3 = new PVector(random(0, width), random(0, height));
+  sh.vertex(p1.x, p1.y, map(p1.x, 0, width, 0, pifire.width), map(p1.y, 0, height, 0, pifire.height));
+  sh.vertex(p2.x, p2.y, map(p2.x, 0, width, 0, pifire.width), map(p2.y, 0, height, 0, pifire.height));
+  sh.vertex(p3.x, p3.y, map(p3.x, 0, width, 0, pifire.width), map(p3.y, 0, height, 0, pifire.height));
+  sh.endShape(); 
+  return sh;
+}
+```
+
+N:
+
 ## Texture shaders: Design patterns
 ### Simple texture
 
 > Pattern 2: Passing data among shaders
 
 ```glsl
-//excerpt from texvert.glsl
+//texvert.glsl
 uniform mat4 texMatrix;
 attribute vec2 texCoord;
 varying vec4 vertTexCoord;
@@ -532,7 +582,6 @@ void main() {
 ```
 
 > texMatrix rescales the texture coordinates (texCoord): inversion along the Y-axis, and non-power-of-two textures
-<!-- .element: class="fragment" data-fragment-index="1"-->
 
 V:
 
@@ -555,6 +604,54 @@ void main() {
 Observe that the `texture2D(texture, vertTexCoord.st) * vertColor` product is consistent:
 * `vertColor` is in `[0..1]`
 * `texture2D(texture, vertTexCoord.st)` is also in `[0..1]`
+
+V:
+
+## Luc Viatour fire breathing
+### Quad
+
+<figure>
+    <img height="400" src="fig/fire_quad.png">
+    <figcaption>Fire breathing texture mapping (source code available [here](https://github.com/VisualComputing/FragmentShaders/tree/gh-pages/sketches/desktop/FireTri))</figcaption>
+</figure>
+
+V:
+
+## Luc Viatour fire breathing
+### Triangle: using custom shader
+
+```glsl
+PImage pifire;
+PShape psfire;
+PShader pshader;
+
+void setup() {
+  size(1920, 1080, P3D);  
+  pifire = loadImage("fire_breathing.jpg");
+  psfire = fireTri(pifire);
+  pshader = loadShader("texfrag.glsl");
+  shader(pshader);
+}
+
+void draw() {    
+  background(0);
+  shape(psfire);
+}
+
+PShape fireTri(PImage tex) {
+  textureMode(NORMAL);
+  PShape sh = createShape();
+  sh.beginShape(QUAD);
+  sh.noStroke();
+  sh.texture(tex);
+  sh.vertex(0, 0, 0, 0);
+  sh.vertex(width, 0, 1, 0);
+  sh.vertex(width, height, 1, 1);
+  sh.vertex(0, height, 0, 1);
+  sh.endShape(); 
+  return sh;
+}
+```
 
 V:
 

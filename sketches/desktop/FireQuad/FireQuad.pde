@@ -1,10 +1,13 @@
 PImage pifire;
 PShape psfire;
+PShader pshader;
 
 void setup() {
   size(1920, 1080, P3D);  
   pifire = loadImage("fire_breathing.jpg");
   psfire = fireTri(pifire);
+  pshader = loadShader("texfrag.glsl");
+  shader(pshader);
 }
 
 void draw() {    
