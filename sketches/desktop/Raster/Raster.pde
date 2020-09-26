@@ -35,7 +35,7 @@ void setup() {
   scene = new Scene(this);
   if (scene.is3D())
     scene.setType(Scene.Type.ORTHOGRAPHIC);
-  scene.setRadius(width/2);
+  scene.setBounds(width/2);
   scene.fit(1);
 
   spinningTask = new TimingTask() {

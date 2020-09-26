@@ -1,4 +1,3 @@
-#ifdef GL_ES
 uniform sampler2D texture;
 uniform vec2 texOffset;
 

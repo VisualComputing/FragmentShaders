@@ -463,31 +463,6 @@ void main() {
 }
 ```
 
-V:
-
-## Examples
-### Picking buffer
-
-([Scene._drawBackBuffer](https://github.com/VisualComputing/nub/blob/master/src/nub/processing/Scene.java) excerpt)
-
-```java
-protected void _drawBackBuffer(Node node) {
-  PGraphics pGraphics = _backBuffer();
-  if (node.pickingThreshold() == 0) {
-    pGraphics.push();
-    // compute rgb from node id
-    float r = (float) (node.id() & 255) / 255.f;
-    float g = (float) ((node.id() >> 8) & 255) / 255.f;
-    float b = (float) ((node.id() >> 16) & 255) / 255.f;
-    // send data to shaders
-    pGraphics.shader(_triangleShader);
-    _triangleShader.set("id", new PVector(r, g, b));
-    ...
-    pGraphics.pop();
-  }
-}
-```
-
 H:
 
 ## The chow mein can

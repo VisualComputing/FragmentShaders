@@ -14,7 +14,7 @@ boolean yDirection;
 // 2. Model color to render to
 boolean cmy;
 // 3. P2D or P3D
-String renderer = P3D;
+String renderer = P2D;
 
 // 4. Window dimension
 int dim = 10;
@@ -27,7 +27,7 @@ void setup() {
   scene = new Scene(this);
   if (scene.is3D())
     scene.setType(Scene.Type.ORTHOGRAPHIC);
-  scene.setRadius(width/2);
+  scene.setBounds(width/2);
   scene.fit(1);
 
   spinningTask = new TimingTask() {
@@ -62,9 +62,7 @@ void setup() {
 }
 
 void draw() {
-  background(0);
-  scene.drawAxes();
-  scene.render();
+  scene.display();
 }
 
 void randomizeTriangle() {
