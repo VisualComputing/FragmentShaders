@@ -817,9 +817,6 @@ varying vec4 vertTexCoord;
 ...
 ```
 
-There's no need to override the vertex shader, becasuse the default one will emit the needed varying variables
-<!-- .element: class="fragment" data-fragment-index="1"-->
-
 V:
 
 ## Convolution filters: Design patterns
@@ -848,7 +845,7 @@ V:
 
 <figure>
     <img height="400" src="fig/edges.png">
-    <figcaption>Edge detection filter (source code available [here](https://github.com/codeanticode/pshader-tutorials/tree/master/intro/Ex_08_2_edges))</figcaption>
+    <figcaption>Edge detection filter (source code available [here](https://github.com/VisualComputing/VertexShaders/tree/gh-pages/sketches/desktop/Edges)</figcaption>
 </figure>
 
 V:
@@ -968,25 +965,38 @@ H:
 To apply any of the image post-processing effects to an arbitrary
 Processing sketch call ```filter(PShader shader)``` after your drawing
 
-For example, to apply the [sharpen shader as a screen filter](https://github.com/VisualComputing/VertexShaders/tree/gh-pages/sketches/desktop/ScreenFilter):
+For example, to apply the [sharpen shader as a screen filter](https://github.com/VisualComputing/FragmentShaders/tree/gh-pages/sketches/desktop/ScreenFilter):
 
 ```java
-PShader sharpen;
+PImage pifire;
+PShape psfire;
+PShader pshader;
 
 void setup() {
-  size(400, 400, P3D); 
-  sharpen = loadShader("sharpen.glsl");  
+  size(1920, 1080, P2D);  
+  pifire = loadImage("fire_breathing.jpg");
+  psfire = fireTri(pifire);
+  pshader = loadShader("texfrag.glsl");
 }
 
-void draw() {
-  background(150);
-  lights();
-  translate(width/2, height/2);
-  rotateX(frameCount * 0.01);
-  rotateY(frameCount * 0.01);
-  box(100);
+void draw() {    
+  background(0);
+  shape(psfire);
+  filter(pshader);
+}
 
-  filter(sharpen);
+PShape fireTri(PImage tex) {
+  textureMode(NORMAL);
+  PShape sh = createShape();
+  sh.beginShape(QUAD);
+  sh.noStroke();
+  sh.texture(tex);
+  sh.vertex(0, 0, 0, 0);
+  sh.vertex(width, 0, 1, 0);
+  sh.vertex(width, height, 1, 1);
+  sh.vertex(0, height, 0, 1);
+  sh.endShape(); 
+  return sh;
 }
 ```
 

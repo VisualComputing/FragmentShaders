@@ -1,17 +1,30 @@
-PShader sharpen;
+PImage pifire;
+PShape psfire;
+PShader pshader;
 
 void setup() {
-  size(400, 400, P3D); 
-  sharpen = loadShader("sharpen.glsl");  
+  size(1920, 1080, P2D);  
+  pifire = loadImage("fire_breathing.jpg");
+  psfire = fireTri(pifire);
+  pshader = loadShader("texfrag.glsl");
 }
 
-void draw() {
-  background(150);
-  lights();
-  translate(width/2, height/2);
-  rotateX(frameCount * 0.01);
-  rotateY(frameCount * 0.01);
-  box(100);
+void draw() {    
+  background(0);
+  shape(psfire);
+  filter(pshader);
+}
 
-  filter(sharpen);
+PShape fireTri(PImage tex) {
+  textureMode(NORMAL);
+  PShape sh = createShape();
+  sh.beginShape(QUAD);
+  sh.noStroke();
+  sh.texture(tex);
+  sh.vertex(0, 0, 0, 0);
+  sh.vertex(width, 0, 1, 0);
+  sh.vertex(width, height, 1, 1);
+  sh.vertex(0, height, 0, 1);
+  sh.endShape(); 
+  return sh;
 }
