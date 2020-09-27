@@ -87,6 +87,28 @@ for pixel in screen:
 
 V:
 
+## Intro: glsl fragment Shader reserved variables
+
+```glsl
+void main() {
+  ...
+  // x -> [0, width], y -> [0, height],
+  // z -> [0, 1], 0 -> zNear, 1 -> zFar
+  vec4 coord = gl_FragCoord(x, y, z, 1/w);
+}
+```
+
+
+```glsl
+void main() {
+  ...
+  // should always be defined
+  gl_FragColor = vec4(r, g, b, a);
+}
+```
+
+V:
+
 ## Intro: Shader variable types
 
 <li class="fragment">*Uniform* variables are those that remain constant for each vertex in the scene, for example the _projection_ and _modelview_ matrices</li>
