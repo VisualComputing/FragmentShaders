@@ -384,7 +384,7 @@ H:
 
 <figure>
     <img height="400" src="fig/raster.png">
-    <figcaption>[Raster example](https://github.com/VisualComputing/VertexShaders/tree/gh-pages/sketches/desktop/raster)</figcaption>
+    <figcaption>[Raster example](https://github.com/VisualComputing/FragmentShaders/tree/gh-pages/sketches/desktop/raster)</figcaption>
 </figure>
 
 N:
@@ -867,7 +867,7 @@ V:
 
 <figure>
     <img height="400" src="fig/edges.png">
-    <figcaption>Edge detection filter (source code available [here](https://github.com/VisualComputing/VertexShaders/tree/gh-pages/sketches/desktop/Edges)</figcaption>
+    <figcaption>Edge detection filter (source code available [here](https://github.com/VisualComputing/FragmentShaders/tree/gh-pages/sketches/desktop/Edges)</figcaption>
 </figure>
 
 V:
@@ -926,7 +926,7 @@ V:
 
 <figure>
     <img height="400" src="fig/sharpen.png">
-    <figcaption>Sharpen filter (source code available [here](https://github.com/VisualComputing/VertexShaders/tree/gh-pages/sketches/desktop/Sharpen))</figcaption>
+    <figcaption>Sharpen filter (source code available [here](https://github.com/VisualComputing/FragmentShaders/tree/gh-pages/sketches/desktop/Sharpen))</figcaption>
 </figure>
 
 V:
