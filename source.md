@@ -21,7 +21,8 @@ H:
 
 ## FRAGMENT-SHADERS IN PROCESSING
 
-Jean Pierre Charalambos
+Jean Pierre Charalambos  
+Universidad Nacional de Colombia
 
 H:
 
