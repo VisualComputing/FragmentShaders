@@ -22,7 +22,7 @@ H:
 ## FRAGMENT-SHADERS IN PROCESSING
 
 Jean Pierre Charalambos  
-Universidad Nacional de Colombia
+[Universidad Nacional de Colombia](https://unal.edu.co/)
 
 H:
 
