@@ -22,7 +22,9 @@ H:
 ## FRAGMENT-SHADERS IN PROCESSING
 
 Jean Pierre Charalambos  
-[Universidad Nacional de Colombia](https://unal.edu.co/)
+[Universidad Nacional de Colombia](https://unal.edu.co/)  
+Presentation best seen [online](https://visualcomputing.github.io/FragmentShaders/)  
+See also the [source code](https://github.com/VisualComputing/FragmentShaders)
 
 H:
 
